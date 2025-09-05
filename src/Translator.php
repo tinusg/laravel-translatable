@@ -116,7 +116,7 @@ class Translator
     /**
      * Determine if the given or current locale is a fallback locale.
      */
-    public function isFallbackLocale(string $locale = null): bool
+    public function isFallbackLocale(?string $locale = null): bool
     {
         $locale = $locale ?: $this->getLocale();
 
@@ -154,7 +154,7 @@ class Translator
     /**
      * Set the translation for the model.
      */
-    public function set(string $attribute, $value, string $locale = null): void
+    public function set(string $attribute, $value, ?string $locale = null): void
     {
         $this->assertAttributeIsTranslatable($attribute);
 
@@ -172,7 +172,7 @@ class Translator
     /**
      * Get the translation value of the given attribute or throw an exception.
      */
-    public function getOrFail(string $attribute, string $locale = null)
+    public function getOrFail(string $attribute, ?string $locale = null)
     {
         return $this->model->withAttributeGetter($attribute, $this->getRawOrFail($attribute, $locale));
     }
@@ -182,7 +182,7 @@ class Translator
      *
      * @param callable|string $default
      */
-    public function getOr(string $attribute, string $locale = null, $default = null)
+    public function getOr(string $attribute, ?string $locale = null, $default = null)
     {
         try {
             return $this->getOrFail($attribute, $locale);
@@ -202,7 +202,7 @@ class Translator
             $this->getRawOrFail($attribute, $locale);
 
             return true;
-        } catch (TranslationMissingException $e) {
+        } catch (TranslationMissingException) {
             return false;
         }
     }
@@ -210,7 +210,7 @@ class Translator
     /**
      * Get the translation value of the given attribute to the given locale.
      */
-    public function get(string $attribute, string $locale = null)
+    public function get(string $attribute, ?string $locale = null)
     {
         if ($this->shouldFallback()) {
             return $this->getOrFallback($attribute, $locale);
@@ -222,7 +222,7 @@ class Translator
     /**
      * Get the translation value of the given attribute or the fallback value if it is missing.
      */
-    public function getOrFallback(string $attribute, string $locale = null)
+    public function getOrFallback(string $attribute, ?string $locale = null)
     {
         return $this->getOr($attribute, $locale, function () use ($attribute) {
             return $this->getFallback($attribute);
@@ -240,7 +240,7 @@ class Translator
     /**
      * Get the raw translation value of the given attribute or throw an exception.
      */
-    public function getRawOrFail(string $attribute, string $locale = null)
+    public function getRawOrFail(string $attribute, ?string $locale = null)
     {
         $this->assertAttributeIsTranslatable($attribute);
 
@@ -250,7 +250,7 @@ class Translator
     /**
      * Set and save the given translation for the model.
      */
-    public function add(string $attribute, $value, string $locale = null): void
+    public function add(string $attribute, $value, ?string $locale = null): void
     {
         $this->set($attribute, $value, $locale);
         $this->model->save();
@@ -259,7 +259,7 @@ class Translator
     /**
      * Set many translations on the model for the given locale.
      */
-    public function setMany(array $translations, string $locale = null): self
+    public function setMany(array $translations, ?string $locale = null): self
     {
         foreach ($translations as $attribute => $value) {
             $this->set($attribute, $value, $locale);
@@ -271,7 +271,7 @@ class Translator
     /**
      * Add many translations to the model for the given locale.
      */
-    public function addMany(array $translations, string $locale = null): void
+    public function addMany(array $translations, ?string $locale = null): void
     {
         $this->setMany($translations, $locale)->save();
     }
@@ -295,7 +295,7 @@ class Translator
     /**
      * Get list of translations for all translatable attributes for the given locale.
      */
-    public function toArray(string $locale = null): array
+    public function toArray(?string $locale = null): array
     {
         $locale = $locale ?: $this->getLocale();
 
