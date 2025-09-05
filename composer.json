@@ -1,5 +1,5 @@
 {
-    "name": "nevadskiy/laravel-translatable",
+    "name": "tinusg/laravel-translatable",
     "description": "Add translations to your Eloquent models",
     "license": "MIT",
     "keywords": [
@@ -10,7 +10,7 @@
         "database",
         "laravel"
     ],
-    "homepage": "https://github.com/nevadskiy/laravel-translatable",
+    "homepage": "https://github.com/tinusg/laravel-translatable",
     "authors": [
         {
             "name": "Nevadskiy",
